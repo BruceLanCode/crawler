@@ -9,8 +9,8 @@ puppeteer.launch()
         console.info('go to https://image.baidu.com/');
 
         await page.setViewport({
-            width: 1920,
-            height: 1080
+            width: 900,
+            height: 500
         });
 
         await page.focus('#kw');
@@ -32,6 +32,6 @@ puppeteer.launch()
                 await srcToImg(src, mn);
             });
 
-            // await brower.close();
+            await brower.close();
         })
     })
