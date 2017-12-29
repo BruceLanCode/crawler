@@ -8,6 +8,8 @@ const writeFile = promisify(fs.writeFile);
 module.exports = async(src, dir) => {
     if(/\.(jpg|jpeg|png|gif)$/.test(src)) {
         await urlToImg(src, dir);
+    } else {
+        await base64ToImg(src, dir)
     }
 }
 
@@ -23,4 +25,19 @@ const urlToImg = promisify((url, dir, callback) => {
                 console.log(file);
             })
     })
-})
+});
+
+const base64ToImg = async(base64Str, dir) => {
+    //data:image/jpeg;base64,/wfasdfs
+
+    const matches = base64Str.match(/^data:(.+?);base64,(.+)$/);
+    try {
+        const ext = matches[1].split('/')[1];
+        const file = path.join(dir, `${Date.now()}.${ext}`);
+
+        await writeFile(file, matches[2],'base64');
+        console.log(file);
+    } catch (ex) {
+        console.log('非法base64字符串')
+    }
+}
